@@ -1157,6 +1157,11 @@ extension Agent {
                 } else if name == "Enter", let prompt = focus.headerField, let field = prompt.delegate as? PromptField {
                     // A prompt's field is UIKit's, standing in for this one: its Return.
                     _ = field.returnHeard(prompt)
+                } else if name == "Enter", let bar = focus.headerField, let search = bar.delegate as? HeaderSearch {
+                    // The bar's search field is UIKit's: Return is its keyboard's Search key, which
+                    // submits (searchBarSearchButtonClicked). Its text field's own Return reaches
+                    // UIKit's private delegate, which never calls back, so a drive's Enter did nothing.
+                    search.searchBarSearchButtonClicked(search.controller.searchBar)
                 } else if let f = focus.selectionField {
                     (f as? TextField)?.heard = name
                     (f.delegate as? PromptField)?.heard = name

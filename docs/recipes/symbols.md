@@ -47,4 +47,6 @@ the role, with a warning that names it (`lower-symbol-alias`).
   web; a row's `forward-chevron` is already grey.
   Emoji and characters (▦ ☏) aren't icons: they ignore the tint and differ by browser.
 - A symbol takes its text's size. Use `font="-exact-title1"` to follow the reader's
-  text size; `width` does not size its glyph.
+  text size. A `width` or `height` on the symbol itself is its box, and the glyph fills it
+  (`object-fit` is `fill`, kept to its aspect, as an SVG's): to keep a column of icons the
+  text's size, put the width on a wrapper (`row width="1.75rem" justify-content="center"`).
