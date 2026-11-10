@@ -68,10 +68,11 @@ panic = "abort"
 [profile.release.build-override]
 strip = false
 
-# A native production build that optimizes for size over speed: every Apple
-# app and embed unless its manifest says `host.<platform>.optimize: "speed"`.
-# The web's choices, natively; its own directory, so an app built for speed
-# and another built for size never rebuild each other.
+# A native production build that optimizes for size over speed: an app whose
+# manifest says `host.<platform>.optimize: "size"`, and an embed
+# (`host/apple/build.mjs --embed`) unless it says otherwise. The web's choices,
+# natively; its own directory, so an app built for speed and another
+# built for size never rebuild each other.
 [profile.size]
 inherits = "release"
 opt-level = "z"

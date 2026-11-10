@@ -56,7 +56,7 @@ const NATIVE_PORTS = 'iOS simulator: a Unix socket; --device: a free TCP port; m
 const APPLE = ['--painted-benchmark', '--watchos', '--watch-sim <udid>', '--ios', '--tvos', '--device', '--run', '--no-install', '--prebuild', '--release', '--host', '--embed', '--bundle', '--distribution', '--unsigned', '--test', '--only <Class,…>',
   '--archive <out.ipa>', '--sim <udid|name>', '--phone <udid|name>', '--url <url>', '--optimize <speed|size>', '--link <plan>', '--widget-gallery'];
 const appleRest = (documented) => APPLE.filter((spec) => !documented.some(([row]) => specs(row).some((d) => name(d) === name(spec))));
-const OPTIMIZE = ['--optimize speed|size', 'the Rust archive\'s (default size, or app.json host.ios|macos.optimize)'];
+const OPTIMIZE = ['--optimize speed|size', 'the Rust archive\'s (default speed, or app.json host.ios|macos.optimize)'];
 const PREBUILD = ['--prebuild', 'start the build apart from this shell and return; its log: .exact/<ios|macos>-build.log'];
 const RELEASE = ['--release', 'the build that ships, as EXACT_UPDATE_TRUST=production: it ignores EXACT_AGENT and EXACT_MODULES, so drive the development build; a first is minutes: --prebuild --release early, then --release waits for it and takes seconds; an iOS agent drive installs over it, saying how to put it back'];
 
