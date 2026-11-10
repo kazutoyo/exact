@@ -729,8 +729,8 @@ async function main(args, lockHeld = false) {
   // at build (injectedProfiles).
   // A production build optimizes for speed (`release`) or for size (`size`,
   // and Swift's -Osize): `--optimize`, else the manifest's
-  // `host.<platform>.optimize`, else size for an embed and speed for an app.
-  const optimize = (args.includes('--optimize') ? args[args.indexOf('--optimize') + 1] : undefined) ?? app.manifest.host?.[ios ? 'ios' : 'macos']?.optimize ?? (args.includes('--embed') ? 'size' : 'speed');
+  // `host.<platform>.optimize`, else size.
+  const optimize = (args.includes('--optimize') ? args[args.indexOf('--optimize') + 1] : undefined) ?? app.manifest.host?.[ios ? 'ios' : 'macos']?.optimize ?? 'size';
   if (!['speed', 'size'].includes(optimize)) throw new Error(`host/apple: --optimize is speed or size, not ${optimize}`);
   const production = cargoEnv.EXACT_UPDATE_TRUST === 'production';
   const cargoProfile = production ? (optimize === 'size' ? 'size' : 'release') : HOST_DEV;
