@@ -1252,6 +1252,19 @@ extension ExactSession {
 }
 
 public extension ExactEnv {
+    #if EXACT_INSPECT
+    static let agentMode = environment["EXACT_AGENT"] == "1"
+    /// `EXACT_AGENT_BIND` (`--bind`): extensions answered by their implementations under the agent.
+    internal static let agentBind = Set((environment["EXACT_AGENT_BIND"] ?? "").split(separator: ",").map(String.init))
+    /// `EXACT_AGENT_TIMING=platform` (opt-in): under the
+    /// agent carrier, UIKit's own transitions, presentations and keyboard
+    /// animations keep their natural timing — the ordinary app with a
+    /// socket, for observing a gesture's native motion. The default freezes
+    /// them, which the smoke depends on.
+    static let agentTiming = environment["EXACT_AGENT_TIMING"] ?? "agent"
+    /// Whether the agent's world is settled between calls: native animation
+    /// applies at once. False under `platform` timing.
+    static let agentFreezes = agentMode && agentTiming != "platform"
     /// `EXACT_AGENT_CHROME=platform` (opt-in; splitter rough 4, 11): under
     /// the agent, the native navigation bar and tab bar show as a person
     /// sees them, their items pressing the authored controls they stand for.
@@ -1276,6 +1289,19 @@ public extension ExactEnv {
     /// `--touch platform` launches with, shows UIKit's:
     /// a real touch opens one and picks its item.
     static let agentPaints = agentDriven && environment["EXACT_AGENT_PRESENTATION"] != "native"
+    #else
+    // A production build (no `EXACT_INSPECT`, Package.swift) never enters agent
+    // mode, as `environment` enforces at run time. Said as constants, the
+    // optimizer drops every agent branch and the code only those branches reach.
+    @inlinable static var agentMode: Bool { false }
+    internal static var agentBind: Set<String> { [] }
+    @inlinable static var agentTiming: String { "agent" }
+    @inlinable static var agentFreezes: Bool { false }
+    @inlinable static var agentChrome: String { "agent" }
+    @inlinable static var agentDriven: Bool { false }
+    @inlinable static var authoredChrome: Bool { false }
+    @inlinable static var agentPaints: Bool { false }
+    #endif
 }
 
 extension ExactSession {

@@ -33,18 +33,6 @@ public enum ExactEnv {
     /// Whether this binary was baked with `EXACT_UPDATE_TRUST=production`
     /// (`BakedCompatibility.production`).
     static let productionBake = BakedCompatibility.production(BakedCompatibility.json)
-    public static let agentMode = environment["EXACT_AGENT"] == "1"
-    /// `EXACT_AGENT_BIND` (`--bind`): extensions answered by their implementations under the agent.
-    static let agentBind = Set((environment["EXACT_AGENT_BIND"] ?? "").split(separator: ",").map(String.init))
-    /// `EXACT_AGENT_TIMING=platform` (opt-in): under the
-    /// agent carrier, UIKit's own transitions, presentations and keyboard
-    /// animations keep their natural timing — the ordinary app with a
-    /// socket, for observing a gesture's native motion. The default freezes
-    /// them, which the smoke depends on.
-    public static let agentTiming = environment["EXACT_AGENT_TIMING"] ?? "agent"
-    /// Whether the agent's world is settled between calls: native animation
-    /// applies at once. False under `platform` timing.
-    public static let agentFreezes = agentMode && agentTiming != "platform"
     public static let smoke = environment["EXACT_SMOKE"] == "1"
     /// Milliseconds since the process's `main`: the wall clock for startup stamps.
     public static let t0 = CACurrentMediaTime()
