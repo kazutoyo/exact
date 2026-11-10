@@ -9,6 +9,17 @@ publish = false
 
 [dependencies]
 ibex2 = { path = "../ibex2", default-features = false }
+
+# Apple's platforms ship SQLite (libsqlite3.dylib, newer than 3.34.1, the
+# oldest these bindings accept, on every OS Exact supports), so their builds
+# link it rather than compile in a second copy.
+# Nothing here depends on the bundled build's options: foreign keys are turned
+# on at open, and the authorizer refuses the virtual tables (FTS, R*Tree,
+# dbstat) and extension loading those options add.
+[target.'cfg(target_vendor = "apple")'.dependencies]
+rusqlite = { version = "0.40.2", features = ["hooks", "limits", "extra_check"] }
+
+[target.'cfg(not(target_vendor = "apple"))'.dependencies]
 rusqlite = { version = "0.40.2", features = ["bundled", "hooks", "limits", "extra_check"] }
 
 [dev-dependencies]

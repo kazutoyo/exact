@@ -22,6 +22,15 @@ The Objective-C fixture in
 `host/apple/tests/fixtures/keychain-migration.mm` exercises retries and failures
 with substituted Security calls; signed Keychain access still needs profiles.
 
+## Apple system SQLite
+
+`crates/ibex2-sqlite/Cargo.toml` turns on rusqlite's `bundled` feature off
+Apple only. Apple targets link the OS's `libsqlite3.dylib`, which saves the
+compiled-in copy (about 1.7 MB of an iOS executable). The Swift package links
+`sqlite3` for the Rust archive (`host/apple/Package.swift`). Foreign keys are
+turned on at open, and the authorizer refuses virtual tables and extension
+loading, so the bundled build's compile options change nothing a caller sees.
+
 ## Snapshot and update recipe
 
 - Upstream: `https://github.com/expo/ibex.git` at

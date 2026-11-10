@@ -53,7 +53,7 @@ if (presenter) {
   if (!existsSync(archive)) throw new Error(`Build the native client first, or pass --archive: ${archive}`);
   const kit = resolve(root, 'host/apple/Sources/ExactKit');
   sources.push(...readdirSync(kit, {recursive: true}).filter(p => p.endsWith('.swift')).sort().map(p => resolve(kit, p)));
-  linked.push('-D', 'EXACT_PRESENTER', '-I', resolve(root, 'host/apple/Sources/CExact'), archive, '-lc++');
+  linked.push('-D', 'EXACT_PRESENTER', '-I', resolve(root, 'host/apple/Sources/CExact'), archive, '-lc++', '-lsqlite3');
   run(resolve(root, 'target/debug/contract'), ['build', resolve(root, 'contract/corpus/scroll.contract'), '-o', resolve(bundle, 'scroll.plan')]);
 }
 run('xcrun', ['--sdk', device ? 'iphoneos' : 'iphonesimulator', 'swiftc', '-O', '-sdk', sdk, '-target', triple, '-framework', 'UIKit',
